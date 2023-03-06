@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
-const authentication = require('../middleware/authentication');
+const { isAdmin } = require('../middleware/authentication');
 
 //for uploading an image
 const storage = multer.diskStorage({
@@ -38,15 +38,15 @@ const blogController = require('../controllers/blog');
 router.get('/', blogController.get_blogs)
 
 //for creating new blog
-router.post('/', upload.single('blogImage'), authentication, blogController.create_blog)
+router.post('/', upload.single('blogImage'), isAdmin, blogController.create_blog)
 
 //for finding blog by id
 router.get('/:blogId', blogController.blog_get);
 
 //for updating the blogs
-router.patch('/:blogId', authentication, blogController.update_blog);
+router.patch('/:blogId', isAdmin, blogController.update_blog);
 
 //for deleting the blog
-router.delete('/:blogId', authentication, blogController.delete_blog);
+router.delete('/:blogId', isAdmin, blogController.delete_blog);
 
 module.exports = router;

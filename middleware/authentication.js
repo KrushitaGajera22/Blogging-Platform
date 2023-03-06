@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 
-module.exports = (req, res, next) => {
+const auth = (req, res, next) => {
     try {
         const token = req.header('authorization').split(' ')[1];
         const decoded = jwt.verify(token, "" + process.env.JWT_KEY);
@@ -12,3 +12,16 @@ module.exports = (req, res, next) => {
         });
     }
 };
+
+const isAdmin = (req, res, next) => {
+    auth(req, res, () => {
+        if(req.data.isAdmin){
+            next()
+        }
+        else{
+            res.status(403).send('Not Authorized');
+        }
+    })
+};
+
+module.exports = {auth, isAdmin};

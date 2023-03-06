@@ -66,7 +66,8 @@ exports.login = (req, res, next) => {
                 if (result) {
                     const token = jwt.sign({
                         email: login[0].email,
-                        loginId: login[0]._id
+                        loginId: login[0]._id,
+                        isAdmin: login[0].isAdmin,
                     },
                        "" + process.env.JWT_KEY,
                         {
